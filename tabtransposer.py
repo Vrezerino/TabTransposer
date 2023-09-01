@@ -1,5 +1,6 @@
+import time
 import tkinter as tk
-from tkinter import filedialog, simpledialog
+from tkinter import filedialog, simpledialog, messagebox
 
 root = tk.Tk()
 root.withdraw()
@@ -8,22 +9,23 @@ def transpose():
     try:
         originalFilepath = filedialog.askopenfilename()
         nameAndExtension = originalFilepath.split('.')
-        #Append "_copy" to new file's name and attach extension.
-        copyFilepath = nameAndExtension[0] + "_copy." + nameAndExtension[1]
+        #Append "_transposed" to new file's name and attach extension.
+        transposedFilepath = nameAndExtension[0] + "_transposed." + nameAndExtension[1]
 
         semitones = int(simpledialog.askinteger('TabTransposer', 'Transpose up or down, and by how many semitones? For example, -2 or 4: '))
         originalFile = open(originalFilepath)
-        copyFile = open(copyFilepath, 'w')
+        copyFile = open(transposedFilepath, 'w')
 
+        startTime = time.time()
         #Function to attempt to detect the symbol in between fret numbers.
-        def mostCommon(list):
+        def mostCommonChar(list):
             return max(set(list), key = list.count)
 
         for line in originalFile:
             # Create a list of every character in the line for iteration and manipulation, and an empty list.
             chars = [*line]
             newChars = []
-            rest = mostCommon(chars)
+            rest = mostCommonChar(chars)
 
             i = 0
             while i < len(chars) - 1:
@@ -58,12 +60,15 @@ def transpose():
 
             #Write new line into file, as a string.
             newLine = ''.join(newChars)
-            
+
             if newLine == '':
                 copyFile.write('\n')
             else:
                 copyFile.write(newLine)
-            #print(newLine)
+
+        endTime = time.time()
+        elapsedTime = str(endTime - startTime)[:6]
+        messagebox.showinfo('Done', 'Transposition finished in ' + elapsedTime + ' seconds!')
     except IOError:
         print('IOError')
 transpose()
