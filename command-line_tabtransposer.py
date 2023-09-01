@@ -1,6 +1,5 @@
-from functools import reduce
 import tkinter as tk
-from tkinter import filedialog, messagebox as mb
+from tkinter import filedialog, simpledialog
 
 root = tk.Tk()
 root.withdraw()
@@ -12,7 +11,7 @@ def transpose():
         #Append "_copy" to new file's name and attach extension.
         copyFilepath = nameAndExtension[0] + "_copy." + nameAndExtension[1]
 
-        semitones = int(input('Transpose up or down, and by how many semitones? E.g -2 or 4: '))
+        semitones = int(simpledialog.askinteger('TabTransposer', 'Transpose up or down, and by how many semitones? For example, -2 or 4: '))
         originalFile = open(originalFilepath)
         copyFile = open(copyFilepath, 'w')
 
