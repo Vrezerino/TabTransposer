@@ -28,6 +28,8 @@ def transpose():
             i = 0
             while i < len(chars) - 1:
                 x = chars[i]
+                if len(chars) == 1:
+                    newChars.append(x)
                 y = chars[i + 1]
 
                 #If the fret number is two-digit, concatenate the digits back into a number and transpose it.
@@ -45,8 +47,8 @@ def transpose():
                         z = int(z) + semitones
                     newChars.append(x)
                     newChars.append(str(z))
-                elif i == len(chars) - 1 and y == '\n':
-                    newChars.append(y)
+                #elif x == '\n' or (i == len(chars) - 1 and y == '\n'):
+                #    newChars.append(y)
                 else:
                     z = x
                     if z.isdigit():
@@ -56,8 +58,12 @@ def transpose():
 
             #Write new line into file, as a string.
             newLine = ''.join(newChars)
-            copyFile.write(newLine)
-            print(newLine)
+            
+            if newLine == '':
+                copyFile.write('\n')
+            else:
+                copyFile.write(newLine)
+            #print(newLine)
     except IOError:
         print('IOError')
 transpose()
