@@ -16,6 +16,7 @@ def transpose():
         originalFile = open(originalFilepath)
         copyFile = open(transposedFilepath, 'w')
 
+        #Start timer for elapsed time info in the final messagebox.
         startTime = time.time()
         #Function to attempt to detect the symbol in between fret numbers.
         def mostCommonChar(list):
