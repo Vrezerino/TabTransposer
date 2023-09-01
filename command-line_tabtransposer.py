@@ -36,10 +36,10 @@ def transpose():
                     z = int(x + y) + semitones
                     #Skip the characters because both of them were compared already.
                     i += 1
-                    newChars.append(str(z))
                     #If after transposing the number is now a one-digit number, append the pause/rest symbol.
                     if len(str(z)) == 1:
                         newChars.append(rest)
+                    newChars.append(str(z))
                 elif i == len(chars) - 2:
                     z = y
                     if z.isdigit():
