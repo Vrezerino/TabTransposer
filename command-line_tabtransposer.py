@@ -29,7 +29,7 @@ def transpose():
 
                 #Attempting to detect and capture the symbol denoting rest or pause between notes.
                 if x.isdigit() and not y.isdigit() and y != '\t' and y != '\n':
-                    rest = x
+                    rest = y
 
                 #If the fret number is two-digit, concatenate the digits back into a number and transpose it.
                 if x.isdigit() and y.isdigit():
