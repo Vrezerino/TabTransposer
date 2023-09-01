@@ -8,11 +8,11 @@ root.withdraw()
 def transpose():
     try:
         originalFilepath = filedialog.askopenfilename()
-        nameAndExtension = originalFilepath.split(".")
+        nameAndExtension = originalFilepath.split('.')
         #Append "_copy" to new file's name and attach extension.
         copyFilepath = nameAndExtension[0] + "_copy." + nameAndExtension[1]
 
-        semitones = int(input("Transpose up or down, and by how many semitones? E.g -2 or 4: "))
+        semitones = int(input('Transpose up or down, and by how many semitones? E.g -2 or 4: '))
         originalFile = open(originalFilepath)
         copyFile = open(copyFilepath, 'w')
 
@@ -28,7 +28,7 @@ def transpose():
                 rest = ''
 
                 #Attempting to detect and capture the symbol denoting rest or pause between notes.
-                if not x.isdigit() and (x != '\t' or x != '\n'):
+                if x.isdigit() and not y.isdigit() and y != '\t' and y != '\n':
                     rest = x
 
                 #If the fret number is two-digit, concatenate the digits back into a number and transpose it.
@@ -37,6 +37,7 @@ def transpose():
                     #Skip the characters because both of them were compared already.
                     i += 1
                     newChars.append(str(z))
+                    #If after transposing the number is now a one-digit number, append the pause/rest symbol.
                     if len(str(z)) == 1:
                         newChars.append(rest)
                 elif i == len(chars) - 2:
