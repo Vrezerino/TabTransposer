@@ -16,20 +16,20 @@ def transpose():
         originalFile = open(originalFilepath)
         copyFile = open(copyFilepath, 'w')
 
+        #Function to attempt to detect the symbol in between fret numbers.
+        def mostCommon(list):
+            return max(set(list), key = list.count)
+
         for line in originalFile:
             # Create a list of every character in the line for iteration and manipulation, and an empty list.
             chars = [*line]
             newChars = []
+            rest = mostCommon(chars)
 
             i = 0
             while i < len(chars) - 1:
                 x = chars[i]
                 y = chars[i + 1]
-                rest = ''
-
-                #Attempting to detect and capture the symbol denoting rest or pause between notes.
-                if x.isdigit() and not y.isdigit() and y != '\t' and y != '\n':
-                    rest = y
 
                 #If the fret number is two-digit, concatenate the digits back into a number and transpose it.
                 if x.isdigit() and y.isdigit():
