@@ -1,45 +1,63 @@
-import sys
 import tkinter as tk
-from tkinter import filedialog, Frame, Button, Text, messagebox as mb
-import shutil
-
-from PyQt5.QtWidgets import QApplication
-import dialog
+from tkinter import filedialog, simpledialog
 
 root = tk.Tk()
-root.geometry('500x500')
-root.title('Transpose notes in tab file')
-#root.withdraw()
+root.withdraw()
 
-def copy_file():
+def transpose():
     try:
-        orig_filepath = filedialog.askopenfilename()
-        name_and_extension = orig_filepath.split(".")
+        originalFilepath = filedialog.askopenfilename()
+        nameAndExtension = originalFilepath.split('.')
         #Append "_copy" to new file's name and attach extension.
-        copy_filepath = name_and_extension[0] + '_copy.' + name_and_extension[1] 
-        
-        #to be continued
-        return copy_filepath
+        copyFilepath = nameAndExtension[0] + "_copy." + nameAndExtension[1]
+
+        semitones = int(simpledialog.askinteger('TabTransposer', 'Transpose up or down, and by how many semitones? For example, -2 or 4: '))
+        originalFile = open(originalFilepath)
+        copyFile = open(copyFilepath, 'w')
+
+        #Function to attempt to detect the symbol in between fret numbers.
+        def mostCommon(list):
+            return max(set(list), key = list.count)
+
+        for line in originalFile:
+            # Create a list of every character in the line for iteration and manipulation, and an empty list.
+            chars = [*line]
+            newChars = []
+            rest = mostCommon(chars)
+
+            i = 0
+            while i < len(chars) - 1:
+                x = chars[i]
+                y = chars[i + 1]
+
+                #If the fret number is two-digit, concatenate the digits back into a number and transpose it.
+                if x.isdigit() and y.isdigit():
+                    z = int(x + y) + semitones
+                    #Skip the characters because both of them were compared already.
+                    i += 1
+                    newChars.append(str(z))
+                    #If after transposing the number is now a one-digit number, append the pause/rest symbol.
+                    if len(str(z)) == 1:
+                        newChars.append(rest)
+                elif i == len(chars) - 2:
+                    z = y
+                    if z.isdigit():
+                        z = int(z) + semitones
+                    newChars.append(x)
+                    newChars.append(str(z))
+                elif i == len(chars) - 1 and y == '\n':
+                    newChars.append(y)
+                else:
+                    z = x
+                    if z.isdigit():
+                        z = int(z) + semitones
+                    newChars.append(str(z))
+                i += 1
+
+            #Write new line into file, as a string.
+            newLine = ''.join(newChars)
+            copyFile.write(newLine)
+            print(newLine)
     except IOError:
-        print("IOError")
-
-def handleFile(path):
-    try:
-        file = open(path, 'r')
-        for line in file:
-            print(line)
-    except IOError:
-        print("File not found or file corrupted.")
-
-def preparation(path):
-    app = QApplication(sys.argv)
-    dlg = dialog.Dialog()
-    dlg.show()
-
-    if dlg.ok.isEnabled():
-        print('go')
-        handleFile(path)
-        sys.exit(app.exec_())
-
-path = copy_file()
-preparation(path)
+        print('IOError')
+transpose()
