@@ -50,8 +50,6 @@ def transpose():
                         z = int(z) + semitones
                     newChars.append(x)
                     newChars.append(str(z))
-                #elif x == '\n' or (i == len(chars) - 1 and y == '\n'):
-                #    newChars.append(y)
                 else:
                     z = x
                     if z.isdigit():
