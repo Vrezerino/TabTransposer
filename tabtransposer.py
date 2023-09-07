@@ -69,5 +69,5 @@ def transpose():
         elapsedTime = str(endTime - startTime)[:6]
         messagebox.showinfo('Done', 'Transposition finished in ' + elapsedTime + ' seconds!')
     except IOError:
-        print('IOError')
+        messagebox.showerror('Error', 'There was an error processing the file.')
 transpose()
