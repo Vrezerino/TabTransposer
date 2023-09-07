@@ -1,8 +1,7 @@
 import time
-import tkinter as tk
-from tkinter import filedialog, simpledialog, messagebox
+from tkinter import filedialog, simpledialog, messagebox, Tk
 
-root = tk.Tk()
+root = Tk()
 root.withdraw()
 
 def transpose():
